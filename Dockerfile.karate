@@ -1,0 +1,14 @@
+FROM maven:3.9-eclipse-temurin-17
+
+WORKDIR /karate
+
+# Copy karate tests and pom.xml
+COPY karate-tests/pom.xml .
+COPY karate-tests/src ./src
+
+# Copy sample PDFs to Karate's test resources (so they're on the classpath)
+RUN mkdir -p /karate/src/test/resources/data/sample_pdfs
+COPY src/data/sample_pdfs/*.pdf /karate/src/test/resources/data/sample_pdfs/
+
+# Default command to run tests
+CMD ["mvn", "clean", "test"]

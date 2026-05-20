@@ -1,0 +1,8 @@
+# .trivyignore
+# Use this file to manage vulnerability, misconfiguration, and secret scanning exclusions.
+# Each line can be a CVE ID, misconfiguration ID (e.g., DS-0002), or secret rule ID.
+
+# DS-0002: Specify at least 1 USER command in Dockerfile with non-root user as argument
+# Running containers with 'root' user is flagged by Trivy as a HIGH misconfiguration.
+# We ignore this for ephemeral testing images (like Dockerfile.karate) and local dev environments.
+DS-0002

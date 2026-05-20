@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api-service:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=memory://
+      - MOCK_LLM=true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  tests:
+    image: maven:3.9.6-eclipse-temurin-17
+    volumes:
+      - .:/usr/src/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    working_dir: /usr/src/app/tests/karate
+    command: mvn test -Dtest=ApiTestRunner -Dkarate.env=ci
+    depends_on:
+      api-service:
+        condition: service_healthy

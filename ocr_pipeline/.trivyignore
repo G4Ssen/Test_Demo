@@ -1,0 +1,6 @@
+# .trivyignore
+# Exclusions for ocr_pipeline security scans.
+
+# DS-0002: Specify at least 1 USER command in Dockerfile with non-root user as argument
+# We ignore this for ephemeral testing images and local dev environments.
+DS-0002

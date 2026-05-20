@@ -1,0 +1,55 @@
+# .gitignore
+# Exclude sensitive environment configurations, build outputs, and IDE files
+
+# Environment Variables
+.env
+.env.local
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+.pytest_cache/
+
+# Java & Maven
+target/
+*.class
+*.log
+*.war
+*.ear
+*.tar.gz
+
+# IDE & Editor Configs
+.vscode/
+.idea/
+.qwen/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.project
+.classpath
+.settings/
+
+# System & OS Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,19 @@
+package performance;
+
+import com.intuit.karate.gatling.javaapi.Simulation;
+import static io.gatling.javaapi.core.CoreDsl.*;
+
+public class PerformanceRunner extends Simulation {
+
+    public PerformanceRunner() {
+        // Karate Gatling setup
+        // It points to the feature file we want to run
+        setUp(
+            scenario("Karate Performance Load Test")
+                .exec(karateFeature("classpath:performance/upload_simulation.feature"))
+                .injectOpen(
+                    rampUsers(50).during(10) // Mock requirement: 50 concurrent users
+                )
+        ).protocols(karateProtocol());
+    }
+}

@@ -1,0 +1,10 @@
+.git
+.github
+.venv
+__pycache__
+*.pyc
+tests/karate/target
+tests/karate/bin
+.DS_Store
+*.log
+TEST-*.xml

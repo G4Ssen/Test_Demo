@@ -1,0 +1,49 @@
+package runner;
+
+import com.intuit.karate.gatling.javaapi.KarateDsl;
+import io.gatling.javaapi.core.*;
+import io.gatling.javaapi.http.*;
+
+import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.http.HttpDsl.*;
+
+/**
+ * Gatling performance simulation driven by Karate feature files.
+ *
+ * Run with:
+ *   mvn gatling:test
+ *
+ * Report: target/gatling/results/<timestamp>/index.html
+ */
+public class PerfTestRunner extends Simulation {
+
+    // ── Scenarios ──────────────────────────────────────────────────────────
+
+    ScenarioBuilder uploadScenario = scenario("PDF Upload Load Test")
+        .exec(KarateDsl.karateFeature("classpath:performance/upload-perf.feature"));
+
+    ScenarioBuilder e2eScenario = scenario("E2E Pipeline Load Test")
+        .exec(KarateDsl.karateFeature("classpath:performance/e2e-perf.feature"));
+
+    // ── Simulation setup ───────────────────────────────────────────────────
+
+    {
+        setUp(
+            // Ramp to 20 concurrent users over 30 s, sustain 10 req/s for 60 s
+            uploadScenario.injectOpen(
+                rampUsers(20).during(30),
+                constantUsersPerSec(10).during(60)
+            ),
+            // 5 concurrent full-pipeline users
+            e2eScenario.injectOpen(
+                rampUsers(5).during(30)
+            )
+        )
+        .protocols(http.baseUrl("http://localhost:8000"))
+        .assertions(
+            global().responseTime().percentile(95).lt(5000),   // p95 < 5 s
+            global().responseTime().mean().lt(2000),            // mean < 2 s
+            global().successfulRequests().percent().gt(95.0)    // ≥ 95% success
+        );
+    }
+}

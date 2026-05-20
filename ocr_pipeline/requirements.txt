@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+pydantic-settings
+pymupdf
+pytesseract
+opencv-python-headless
+Pillow
+openai
+redis
+aioredis
+spacy
+python-dotenv
